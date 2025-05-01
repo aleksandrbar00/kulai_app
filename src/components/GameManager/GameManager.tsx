@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router";
 import { Lesson } from "./components/Question/Question";
+import { initializeLesson } from "./stores/lessonStore";
 import type { Question } from "./types";
 
 // Usage example
@@ -19,7 +21,13 @@ const sampleQuestions: Question[] = [
   ];
 
 export const GameManager = () => {
+    const navigate = useNavigate();
+
+    initializeLesson(sampleQuestions);
+
     return <>
-        <Lesson questions={sampleQuestions} onComplete={() => {}} />
+        <Lesson onComplete={() => {
+          navigate('/');
+        }} />
     </>
 }
