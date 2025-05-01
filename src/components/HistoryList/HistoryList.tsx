@@ -5,71 +5,75 @@ import {
   Text,
   HStack,
   Badge,
-  Icon,
-  Card,
-  Tag,
-  List,
+  Button,
+  ButtonGroup,
 } from '@chakra-ui/react';
-import { FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaClock, FaRedo, FaInfoCircle } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 // Type definitions
 type HistoryItem = {
   id: string;
-  type: 'game' | 'lesson';
   title: string;
   date: Date;
-  duration: number; // in minutes
-  score?: number;
-  maxScore?: number;
-  correctAnswers?: number;
-  totalQuestions?: number;
+  duration: number; // in seconds
+  score: number;
+  totalQuestions: number;
   status: 'completed' | 'failed' | 'incomplete';
 };
 
 export const HistoryList = () => {
-  // Sample history data
-  const historyItems: HistoryItem[] = [
-    {
-      id: '1',
-      type: 'game',
-      title: 'JavaScript Basics Quiz',
-      date: new Date('2023-05-15T14:30:00'),
-      duration: 15,
-      score: 85,
-      maxScore: 100,
-      correctAnswers: 17,
-      totalQuestions: 20,
-      status: 'completed'
-    },
-    {
-      id: '2',
-      type: 'lesson',
-      title: 'React Hooks Tutorial',
-      date: new Date('2023-05-14T10:15:00'),
-      duration: 45,
-      status: 'completed'
-    },
-    {
-      id: '3',
-      type: 'game',
-      title: 'Advanced CSS Challenge',
-      date: new Date('2023-05-12T16:45:00'),
-      duration: 20,
-      score: 60,
-      maxScore: 100,
-      correctAnswers: 12,
-      totalQuestions: 20,
-      status: 'failed'
-    },
-    {
-      id: '4',
-      type: 'lesson',
-      title: 'TypeScript Fundamentals',
-      date: new Date('2023-05-10T09:00:00'),
-      duration: 30,
-      status: 'incomplete'
-    }
-  ];
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load history data from localStorage
+    const loadHistoryData = () => {
+      try {
+        // Get all items in localStorage
+        const allLessons: HistoryItem[] = [];
+        const LESSON_LIST_KEY = 'kulai_lessons';
+        
+        // Get the list of lessons
+        const lessonList = localStorage.getItem(LESSON_LIST_KEY);
+        if (lessonList) {
+          const lessonIds = JSON.parse(lessonList);
+          
+          // For each lesson ID, get the lesson data
+          for (const lessonMeta of lessonIds) {
+            const lessonData = localStorage.getItem(`kulai_lesson_${lessonMeta.id}`);
+            if (lessonData) {
+              const lesson = JSON.parse(lessonData);
+              
+              // Format the data for our history list
+              allLessons.push({
+                id: lesson.id,
+                title: lesson.title || 'Untitled Lesson',
+                date: new Date(lesson.createdAt),
+                duration: lesson.totalDuration,
+                score: lesson.score,
+                totalQuestions: lesson.questions.length,
+                status: lesson.showResults ? 'completed' : 'incomplete'
+              });
+            }
+          }
+        }
+
+        // Sort by date (newest first)
+        allLessons.sort((a, b) => b.date.getTime() - a.date.getTime());
+        
+        setHistoryItems(allLessons);
+      } catch (error) {
+        console.error('Error loading history data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadHistoryData();
+  }, []);
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -86,69 +90,106 @@ export const HistoryList = () => {
     });
   };
 
-  const getStatusIcon = (status: HistoryItem['status']) => {
-    switch (status) {
-      case 'completed':
-        return <Icon as={FaCheckCircle} color="green.500" />;
-      case 'failed':
-        return <Icon as={FaTimesCircle} color="red.500" />;
-      default:
-        return <Icon as={FaClock} color="yellow.500" />;
-    }
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  return (
-    <Card.Root variant="outline" width="100%">
-      <Card.Header>
-        <Heading size="md">Recent Activity</Heading>
-        <Text fontSize="sm" color="gray.500">Your last lessons and games</Text>
-      </Card.Header>
-      <Card.Body padding={0}>
-        <List.Root>
-          {historyItems.map((item) => (
-            <List.Item key={item.id} _hover={{ bg: 'gray.50' }} padding={4}>
-              <Flex justify="space-between" align="center">
-                {/* Left side - Info */}
-                <HStack>
-                  <Box>
-                    <Text fontWeight="medium">{item.title}</Text>
-                    <HStack mt={1}>
-                      <Text fontSize="sm" color="gray.500">
-                        {formatDate(item.date)} • {formatTime(item.date)}
-                      </Text>
-                      <HStack>
-                        <Icon as={FaClock} color="gray.400" boxSize={3} />
-                        <Text fontSize="sm" color="gray.500">
-                          {item.duration} min
-                        </Text>
-                      </HStack>
-                    </HStack>
-                  </Box>
-                </HStack>
+  const handleContinueLesson = (lessonId: string) => {
+    navigate(`/lesson-process/${lessonId}`);
+  };
 
-                {/* Right side - Stats */}
-                <HStack>
-                  {item.type === 'game' && (
-                    <>
-                      <Tag.Root colorScheme="blue" variant="subtle">
-                        <Tag.Label>
-                          {item.score}/{item.maxScore}
-                        </Tag.Label>
-                      </Tag.Root>
-                      <Badge colorScheme={item.status === 'completed' ? 'green' : 'red'}>
-                        {item.correctAnswers}/{item.totalQuestions} correct
-                      </Badge>
-                    </>
-                  )}
-                  <Box>
-                    {getStatusIcon(item.status)}
-                  </Box>
+  if (isLoading) {
+    return (
+      <Box p={4}>
+        <Text>Loading history...</Text>
+      </Box>
+    );
+  }
+
+  if (historyItems.length === 0) {
+    return (
+      <Box p={4} borderWidth="1px" borderRadius="md" bg="blue.50" color="blue.800">
+        <Text>No lesson history found. Start a new lesson to track your progress!</Text>
+      </Box>
+    );
+  }
+
+  return (
+    <Box borderWidth="1px" borderRadius="md" width="100%">
+      <Box p={4} borderBottomWidth="1px">
+        <Heading size="md">Lesson History</Heading>
+        <Text fontSize="sm" color="gray.500">Your previously played lessons</Text>
+      </Box>
+      <Box>
+        {historyItems.map((item) => (
+          <Box 
+            key={item.id} 
+            _hover={{ bg: 'gray.50' }} 
+            p={4}
+            borderBottomWidth="1px"
+            borderBottomColor="gray.100"
+          >
+            <Flex justify="space-between" align="center">
+              {/* Left side - Info */}
+              <Box>
+                <Text fontWeight="medium">{item.title}</Text>
+                <HStack mt={1}>
+                  <Text fontSize="sm" color="gray.500">
+                    {formatDate(item.date)} • {formatTime(item.date)}
+                  </Text>
+                  <HStack>
+                    <Box as={FaClock} color="gray.400" boxSize={3} />
+                    <Text fontSize="sm" color="gray.500">
+                      {formatDuration(item.duration)}
+                    </Text>
+                  </HStack>
                 </HStack>
-              </Flex>
-            </List.Item>
-          ))}
-        </List.Root>
-      </Card.Body>
-    </Card.Root>
+              </Box>
+
+              {/* Right side - Stats */}
+              <HStack>
+                {/* Status tag */}
+                <Badge colorScheme={item.status === 'completed' ? 'green' : 'yellow'}>
+                  {item.status === 'completed' ? 'Completed' : 'In Progress'}
+                </Badge>
+                
+                {/* Score */}
+                {item.status === 'completed' && (
+                  <Badge colorScheme={item.score >= item.totalQuestions / 2 ? 'green' : 'red'}>
+                    {item.score}/{item.totalQuestions} correct
+                  </Badge>
+                )}
+                
+                {/* Action buttons */}
+                <ButtonGroup size="sm">
+                  {/* Continue button for incomplete lessons */}
+                  {item.status === 'incomplete' && (
+                    <Button 
+                      colorScheme="blue"
+                      onClick={() => handleContinueLesson(item.id)}
+                    >
+                      <Box as={FaRedo} mr={2} />
+                      Continue
+                    </Button>
+                  )}
+                  
+                  {/* View details button for all lessons */}
+                  <Button 
+                    variant={item.status === 'incomplete' ? "outline" : "solid"}
+                    colorScheme="purple"
+                    onClick={() => navigate(`/lesson-details/${item.id}`)}
+                  >
+                    <Box as={FaInfoCircle} mr={2} />
+                    Details
+                  </Button>
+                </ButtonGroup>
+              </HStack>
+            </Flex>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 };

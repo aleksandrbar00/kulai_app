@@ -6,6 +6,7 @@ import { QuestionsBankPage } from "./pages/QuestionsBankPage/QuestionsBankPage";
 import { LessonManagerPage } from "./pages/LessonPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { LessonProccessPage } from "./pages/LessonProccessPage/LessonProccessPage";
+import { LessonDetailsPage } from "./pages/LessonDetailsPage/LessonDetailsPage";
 import { LessonGuard } from "./components/LessonGuard";
 import { LessonContinueModal } from "./components/LessonContinueModal";
 
@@ -28,6 +29,7 @@ export const App = () => {
                             <LessonProccessPage />
                         </LessonGuard>
                     } />
+                    <Route path="/lesson-details/:lessonId" element={<LessonDetailsPage />} />
                     <Route path="/history" element={<HistoryPage />} />
                 </Routes>
             </ContentLayout>
