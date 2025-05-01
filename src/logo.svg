@@ -1,0 +1,15 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stylized K for Kulai -->
+  <path d="M70 55 L70 145 L85 145 L85 105 L120 145 L140 145 L95 95 L135 55 L115 55 L85 90 L85 55 L70 55Z" fill="#4299E1" />
+  
+  <!-- Quiz elements -->
+  <g opacity="0.9">
+    <!-- Checkmark -->
+    <path d="M125 75 L135 85 L155 65" stroke="#4299E1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Multiple choice bullets -->
+    <circle cx="135" cy="110" r="5" fill="#4299E1" />
+    <circle cx="135" cy="125" r="5" fill="#4299E1" />
+    <circle cx="135" cy="140" r="5" fill="#4299E1" />
+  </g>
+</svg> 

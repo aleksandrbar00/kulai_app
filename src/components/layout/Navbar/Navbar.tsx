@@ -1,13 +1,24 @@
-import { Box, Flex } from "@chakra-ui/react"
+import { Flex, Image } from "@chakra-ui/react"
 import { UserAvatar } from "../UserAvatar"
 import { Link } from "react-router"
+import LogoIcon from "../../../logo.svg"
 
 export const Navbar = () => {
-    return <Flex py={4} alignItems="center" justifyContent="space-between">
+    return <Flex 
+        py={4} 
+        px={4}
+        alignItems="center" 
+        justifyContent="space-between"
+    >
         <Link to="/">
-            <Box>
-                Project Kulaia
-            </Box>
+            <Flex alignItems="center" gap={2}>
+                <Image 
+                    src={LogoIcon} 
+                    alt="Kulai Logo" 
+                    height="40px"
+                    width="auto"
+                />
+            </Flex>
         </Link>
         <UserAvatar name="Test User" />
     </Flex>

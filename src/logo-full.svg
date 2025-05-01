@@ -1,0 +1,25 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient background -->
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3182CE" />
+      <stop offset="100%" stop-color="#63B3ED" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Stylized K -->
+  <path d="M65 50 L65 150 L85 150 L85 110 L115 150 L140 150 L100 100 L135 50 L115 50 L85 85 L85 50 L65 50Z" fill="#3182CE" />
+  
+  <!-- Quiz elements -->
+  <rect x="50" y="90" width="10" height="10" rx="2" fill="#3182CE" opacity="0.8" />
+  <rect x="50" y="110" width="10" height="10" rx="2" fill="#3182CE" opacity="0.8" />
+  <rect x="50" y="130" width="10" height="10" rx="2" fill="#3182CE" opacity="0.8" />
+  
+  <!-- Text part -->
+  <text x="200" y="110" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#2C5282" text-anchor="middle">
+    KULAI
+  </text>
+  <text x="200" y="135" font-family="Arial, sans-serif" font-size="16" fill="#4A5568" text-anchor="middle">
+    LEARNING PLATFORM
+  </text>
+</svg> 

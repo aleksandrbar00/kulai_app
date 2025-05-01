@@ -1,5 +1,5 @@
-import { GameManager } from "@/components/GameManager"
+import LessonManager from "@/components/LessonManager"
 
-export const LessonPage = () => {
-    return <GameManager />
+export const LessonManagerPage = () => {
+    return <LessonManager />
 }
