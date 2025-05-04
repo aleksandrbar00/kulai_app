@@ -6,11 +6,9 @@ import { WordGrid } from "../WordGrid";
 import { 
   lessonState,
   currentQuestion,
-  currentAttempts,
   attemptsLeft,
-  handleCorrectAnswer,
-  handleWrongAnswer
-} from "../../stores/lessonStore";
+  lessonActions
+} from "../../stores";
 
 interface LessonProps {
   onComplete: (finalScore: number, totalQuestions: number) => void;
@@ -19,11 +17,11 @@ interface LessonProps {
 export const Lesson = ({ onComplete }: LessonProps) => {
   useSignals();
   
-  const handleQuestionResult = (isCorrect: boolean) => {
+  const handleQuestionResult = (isCorrect: boolean, userAnswer?: string) => {
     if (isCorrect) {
-      handleCorrectAnswer();
+      lessonActions.handleCorrectAnswer(userAnswer);
     } else {
-      handleWrongAnswer();
+      lessonActions.handleWrongAnswer(userAnswer);
     }
   };
 

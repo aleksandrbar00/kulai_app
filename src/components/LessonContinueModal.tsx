@@ -8,11 +8,9 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { 
-  getAvailableLessons,
-  loadLesson,
-  clearCurrentLesson,
-  isLessonCompleted
-} from './GameManager/stores/lessonStore';
+  lessonActions,
+  storageService
+} from './GameManager/stores';
 
 export const LessonContinueModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,10 +26,10 @@ export const LessonContinueModal = () => {
   // Check for existing lessons when on lesson page
   useEffect(() => {
     const checkExistingLessons = () => {
-      const lessons = getAvailableLessons();
+      const lessons = storageService.getAvailableLessons();
       if (lessons.length > 0) {
         // Filter to only get unfinished lessons
-        const unfinishedLessons = lessons.filter(lesson => !isLessonCompleted(lesson.id));
+        const unfinishedLessons = lessons.filter(lesson => !lessonActions.isLessonCompleted(lesson.id));
         
         if (unfinishedLessons.length > 0) {
           // Get most recent unfinished lesson
@@ -57,14 +55,14 @@ export const LessonContinueModal = () => {
 
   const handleContinue = () => {
     if (existingLesson) {
-      loadLesson(existingLesson.id);
+      lessonActions.loadLesson(existingLesson.id);
       navigate(`/lesson-process/${existingLesson.id}`);
     }
     setIsOpen(false);
   };
 
   const handleStartNew = () => {
-    clearCurrentLesson();
+    lessonActions.clearCurrentLesson();
     setIsOpen(false);
   };
 

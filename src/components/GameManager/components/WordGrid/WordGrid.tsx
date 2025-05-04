@@ -1,12 +1,12 @@
 // components/WordGrid.tsx
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignals } from "@preact/signals-react/runtime";
 
 interface WordGridProps {
   correctWord: string;
   wordOptions: string[];
-  onAttempt: (isCorrect: boolean) => void;
+  onAttempt: (isCorrect: boolean, selectedWord: string) => void;
   disabled?: boolean;
 }
 
@@ -18,13 +18,23 @@ export const WordGrid = ({
 }: WordGridProps) => {
   useSignals();
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
+  
+  // Reset selectedWord when the correctWord changes (new question)
+  useEffect(() => {
+    setSelectedWord(null);
+  }, [correctWord, wordOptions]);
 
   const handleWordSelect = (word: string) => {
     if (disabled || selectedWord !== null) return;
     
     setSelectedWord(word);
     const isCorrect = word.toLowerCase() === correctWord.toLowerCase();
-    onAttempt(isCorrect);
+    onAttempt(isCorrect, word);
+  };
+
+  // Function to explicitly reset state for next question
+  const resetSelection = () => {
+    setSelectedWord(null);
   };
 
   return (
@@ -40,14 +50,14 @@ export const WordGrid = ({
             p={6}
             bg={
               selectedWord === word
-                ? word === correctWord
+                ? word.toLowerCase() === correctWord.toLowerCase()
                   ? "green.100"
                   : "red.100"
                 : "gray.100"
             }
             color={
               selectedWord === word
-                ? word === correctWord
+                ? word.toLowerCase() === correctWord.toLowerCase()
                   ? "green.800"
                   : "red.800"
                 : "gray.800"
@@ -55,7 +65,7 @@ export const WordGrid = ({
             borderWidth="2px"
             borderColor={
               selectedWord === word
-                ? word === correctWord
+                ? word.toLowerCase() === correctWord.toLowerCase()
                   ? "green.500"
                   : "red.500"
                 : "gray.200"
@@ -80,12 +90,10 @@ export const WordGrid = ({
           mt={4}
           colorScheme="blue"
           onClick={() => {
-            setSelectedWord(null);
-            if (disabled) onAttempt(false);
+            resetSelection();
           }}
-          disabled={disabled}
         >
-          {disabled ? "Continue" : "Try Again"}
+          Next
         </Button>
       )}
     </Flex>

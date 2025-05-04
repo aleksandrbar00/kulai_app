@@ -1,9 +1,7 @@
 // components/WordInput.tsx
 import { 
-  Box, 
   Flex, 
   Input,
-  Text,
   Button,
 } from "@chakra-ui/react";
 import { useState, useRef, useEffect } from "react";
@@ -11,7 +9,7 @@ import { useSignals } from "@preact/signals-react/runtime";
 
 interface WordInputProps {
   word?: string;
-  onAttempt?: (isCorrect: boolean) => void;
+  onAttempt?: (isCorrect: boolean, userAnswer: string) => void;
   disabled?: boolean;
   attemptsLeft?: number;
 }
@@ -53,7 +51,7 @@ export const WordInput = ({
     setIsWrongAttempt(!isCorrect);
     
     if (onAttempt) {
-      onAttempt(isCorrect);
+      onAttempt(isCorrect, attempt);
     }
 
     if (!isCorrect) {
