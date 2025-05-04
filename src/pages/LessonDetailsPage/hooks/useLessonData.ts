@@ -154,6 +154,16 @@ export const useLessonData = (lessonId: string | undefined): UseLessonDataResult
           // Get the user's actual answer if available
           let userAnswer = userSelections[q.id];
           
+          console.log(`Question ${q.id} user selection:`, {
+            questionText: q.text || q.questionText,
+            type: q.type,
+            userAnswer,
+            fromStorage: userSelections[q.id],
+            correctAnswer: q.answer,
+            correctOptionId: q.correctOptionId,
+            hasAttempted,
+          });
+          
           // Only infer answers for completed lessons or lessons with attempts
           if (!userAnswer && hasAttempted) {
             // For display purposes: try to create a realistic user answer
@@ -230,6 +240,14 @@ export const useLessonData = (lessonId: string | undefined): UseLessonDataResult
           
           // Create properly formatted options
           let options: Array<{id: string; text: string}> = [];
+          let questionType = q.type || 'multipleChoice';
+          
+          // Explicitly set type based on actual data structure
+          if (Array.isArray(q.options) && q.options.length > 0) {
+            questionType = 'multipleChoice';
+          } else if (q.answer && !Array.isArray(q.options)) {
+            questionType = 'input';
+          }
           
           // Simple approach - create new options based on question type and data
           if (q.type === 'multipleChoice' && Array.isArray(q.options)) {
@@ -289,6 +307,8 @@ export const useLessonData = (lessonId: string | undefined): UseLessonDataResult
             correctOptionId: q.correctOptionId || '0', // For converted options, 0 is correct
             // Return the actual user answer, if we have it
             userAnswer: userAnswer,
+            // Ensure type is preserved and properly set
+            type: questionType
           };
         });
         
