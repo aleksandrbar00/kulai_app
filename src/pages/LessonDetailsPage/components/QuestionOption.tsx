@@ -1,5 +1,6 @@
 import { Box, Flex, GridItem, Text, Badge } from '@chakra-ui/react';
 import { FaCheck, FaTimes, FaUser } from 'react-icons/fa';
+import { colors } from '../../../components/ui/styles';
 
 interface QuestionOptionProps {
   text: string;
@@ -13,30 +14,30 @@ export const QuestionOption = ({
   isUserSelection 
 }: QuestionOptionProps) => {
   // Determine styling based on correct/incorrect status
-  let bgColor = '';
-  let borderColor = 'gray.200';
+  let bgColor = colors.background.card;
+  let borderColor = colors.border.normal;
   let borderWidth = '1px';
-  let textColor = 'gray.800';
+  let textColor = colors.text.primary;
   
   if (isUserSelection && isCorrectAnswer) {
     // User selected correctly
-    bgColor = 'green.100';
-    borderColor = 'green.500';
+    bgColor = `${colors.status.success}20`;
+    borderColor = colors.status.success;
     borderWidth = '2px';
-    textColor = 'green.800';
+    textColor = colors.text.primary;
   } else if (isUserSelection && !isCorrectAnswer) {
     // User selected incorrectly - make this very obvious
-    bgColor = 'red.100';
-    borderColor = 'red.500';
+    bgColor = `${colors.status.error}20`;
+    borderColor = colors.status.error;
     borderWidth = '2px';
-    textColor = 'red.800';
+    textColor = colors.text.primary;
   } else if (isCorrectAnswer) {
     // Correct answer, but not selected
-    bgColor = 'green.50';
-    borderColor = 'green.300';
+    bgColor = `${colors.status.success}10`;
+    borderColor = `${colors.status.success}50`;
   } else {
     // Normal unselected option
-    bgColor = 'gray.50';
+    bgColor = colors.background.card;
   }
 
   return (
@@ -61,19 +62,37 @@ export const QuestionOption = ({
           </Text>
           <Flex align="center">
             {isUserSelection && !isCorrectAnswer && (
-              <Badge colorScheme="red" mr={2}>Wrong</Badge>
+              <Badge 
+                px={2} 
+                py={1} 
+                borderRadius="full"
+                bg={`${colors.status.error}30`}
+                color={colors.status.error}
+                mr={2}
+              >
+                Wrong
+              </Badge>
             )}
             {isUserSelection && isCorrectAnswer && (
-              <Badge colorScheme="green" mr={2}>Correct</Badge>
+              <Badge 
+                px={2} 
+                py={1} 
+                borderRadius="full"
+                bg={`${colors.status.success}30`}
+                color={colors.status.success}
+                mr={2}
+              >
+                Correct
+              </Badge>
             )}
             {isUserSelection && (
-              <Box as={FaUser} color="blue.500" mr={2} />
+              <Box as={FaUser} color={colors.brand.primary} mr={2} />
             )}
             {isUserSelection && !isCorrectAnswer && (
-              <Box as={FaTimes} color="red.500" mr={2} />
+              <Box as={FaTimes} color={colors.status.error} mr={2} />
             )}
             {isCorrectAnswer && (
-              <Box as={FaCheck} color="green.500" />
+              <Box as={FaCheck} color={colors.status.success} />
             )}
           </Flex>
         </Flex>

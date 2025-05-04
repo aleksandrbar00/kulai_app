@@ -7,11 +7,19 @@ import type { ThemeProviderProps } from "next-themes"
 import * as React from "react"
 import { LuMoon, LuSun } from "react-icons/lu"
 
-export interface ColorModeProviderProps extends ThemeProviderProps {}
+export interface ColorModeProviderProps extends ThemeProviderProps {
+  forcedTheme?: string;
+}
 
 export function ColorModeProvider(props: ColorModeProviderProps) {
+  const { forcedTheme, ...rest } = props;
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
+    <ThemeProvider 
+      attribute="class" 
+      disableTransitionOnChange 
+      forcedTheme={forcedTheme || undefined}
+      {...rest} 
+    />
   )
 }
 
