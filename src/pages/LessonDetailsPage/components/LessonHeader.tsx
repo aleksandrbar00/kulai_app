@@ -11,7 +11,7 @@ interface LessonHeaderProps {
 export const LessonHeader = ({ title, createdAt, duration, isCompleted }: LessonHeaderProps) => {
   const formatDate = (dateStr: string | number) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('ru-RU', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
@@ -20,7 +20,7 @@ export const LessonHeader = ({ title, createdAt, duration, isCompleted }: Lesson
 
   const formatTime = (dateStr: string | number) => {
     const date = new Date(dateStr);
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString('ru-RU', {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -35,19 +35,19 @@ export const LessonHeader = ({ title, createdAt, duration, isCompleted }: Lesson
   return (
     <Box mb={8}>
       <Heading size="xl" mb={2}>
-        {title || 'Untitled Lesson'}
+        {title || 'Урок без названия'}
       </Heading>
       <HStack color="gray.600">
         <HStack>
           <Box as={FaCalendar} />
-          <Text>{formatDate(createdAt)} at {formatTime(createdAt)}</Text>
+          <Text>{formatDate(createdAt)} в {formatTime(createdAt)}</Text>
         </HStack>
         <HStack>
           <Box as={FaClock} />
           <Text>{formatDuration(duration)}</Text>
         </HStack>
         <Badge colorScheme={isCompleted ? 'green' : 'yellow'}>
-          {isCompleted ? 'Completed' : 'In Progress'}
+          {isCompleted ? 'Завершен' : 'В процессе'}
         </Badge>
       </HStack>
     </Box>

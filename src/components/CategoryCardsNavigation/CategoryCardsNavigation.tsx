@@ -3,123 +3,131 @@ import {
   Grid,
   Heading,
   Text,
-  Card,
-  Button,
   Flex,
-  Icon
+  Icon,
 } from '@chakra-ui/react';
-import { FaGamepad, FaHistory } from 'react-icons/fa';
+import { FaGamepad, FaHistory, FaQuestion } from 'react-icons/fa';
 import { Link } from 'react-router';
+import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
+import { colors } from '../ui/styles';
 
 export const CategoryCardsNavigation = () => {
   return (
     <Box p={6}>
-      <Heading mb={8} textAlign="center" color="gray.700">
-        Game Dashboard
+      <Heading 
+        mb={8} 
+        textAlign="center" 
+        color={colors.text.primary}
+        size="xl"
+      >
+        Панель управления
       </Heading>
       
       <Grid
-        templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+        templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
         gap={6}
-        maxW="800px"
+        maxW="1200px"
         mx="auto"
       >
         {/* Play Game Card */}
-        <Card.Root
-          borderWidth="1px"
-          borderColor="gray.200"
-          boxShadow="lg"
-          _hover={{ transform: 'translateY(-5px)', boxShadow: 'xl' }}
-          transition="all 0.2s"
-        >
-          <Card.Header>
-            <Flex align="center">
-              <Icon as={FaGamepad} w={8} h={8} color="blue.500" mr={3} />
-              <Heading size="md">Play Game</Heading>
+        <Card isHoverable>
+          <Box p={5}>
+            <Flex align="center" mb={4}>
+              <Box
+                borderRadius="full"
+                bg={`${colors.brand.primary}30`}
+                p={3}
+                mr={3}
+              >
+                <Icon as={FaGamepad} w={6} h={6} color={colors.brand.primary} />
+              </Box>
+              <Heading size="md" color={colors.text.primary}>Начать игру</Heading>
             </Flex>
-          </Card.Header>
-          <Card.Body>
-            <Text>
-              Start a new game and test your skills against players from around the world.
+            
+            <Text color={colors.text.secondary} mb={4}>
+              Начните новую игру и проверьте свои навыки в соревновании с игроками со всего мира.
             </Text>
-          </Card.Body>
-          <Card.Footer>
-            <Link to="/lesson">
-                <Button 
-                colorScheme="blue" 
-                width="full"
-                onClick={() => console.log('Navigate to play game')}
+            
+            <Box mt={2}>
+              <Link to="/lesson" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="primary"
+                  w="full"
+                  onClick={() => console.log('Navigate to play game')}
                 >
-                    Go to lesson
+                  Перейти к уроку
                 </Button>
-            </Link>
-          </Card.Footer>
-        </Card.Root>
+              </Link>
+            </Box>
+          </Box>
+        </Card>
 
         {/* History Card */}
-        <Card.Root
-          borderWidth="1px"
-          borderColor="gray.200"
-          boxShadow="lg"
-          _hover={{ transform: 'translateY(-5px)', boxShadow: 'xl' }}
-          transition="all 0.2s"
-        >
-          <Card.Header>
-            <Flex align="center">
-              <Icon as={FaHistory} w={8} h={8} color="green.500" mr={3} />
-              <Heading size="md">Game History</Heading>
+        <Card isHoverable>
+          <Box p={5}>
+            <Flex align="center" mb={4}>
+              <Box
+                borderRadius="full"
+                bg={`${colors.status.info}30`}
+                p={3}
+                mr={3}
+              >
+                <Icon as={FaHistory} w={6} h={6} color={colors.status.info} />
+              </Box>
+              <Heading size="md" color={colors.text.primary}>История игр</Heading>
             </Flex>
-          </Card.Header>
-          <Card.Body>
-            <Text>
-              View your past games, statistics, and achievements.
+            
+            <Text color={colors.text.secondary} mb={4}>
+              Просмотрите свои прошлые игры, статистику и достижения.
             </Text>
-          </Card.Body>
-          <Card.Footer>
-            <Link to="/history">
-                <Button 
-                colorScheme="green" 
-                width="full"
-                onClick={() => console.log('Navigate to game history')}
+            
+            <Box mt={2}>
+              <Link to="/history" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="primary"
+                  w="full"
+                  onClick={() => console.log('Navigate to game history')}
                 >
-                View History
+                  Просмотреть историю
                 </Button>
-            </Link>
-          </Card.Footer>
-        </Card.Root>
+              </Link>
+            </Box>
+          </Box>
+        </Card>
 
-
-        {/*QUESTION BANK CARD*/}
-        <Card.Root
-          borderWidth="1px"
-          borderColor="gray.200"
-          boxShadow="lg"
-          _hover={{ transform: 'translateY(-5px)', boxShadow: 'xl' }}
-          transition="all 0.2s"
-        >
-          <Card.Header>
-            <Flex align="center">
-              <Icon as={FaHistory} w={8} h={8} color="green.500" mr={3} />
-              <Heading size="md">Question bank</Heading>
+        {/* Question Bank Card */}
+        <Card isHoverable>
+          <Box p={5}>
+            <Flex align="center" mb={4}>
+              <Box
+                borderRadius="full"
+                bg={`${colors.status.success}30`}
+                p={3}
+                mr={3}
+              >
+                <Icon as={FaQuestion} w={6} h={6} color={colors.status.success} />
+              </Box>
+              <Heading size="md" color={colors.text.primary}>Банк вопросов</Heading>
             </Flex>
-          </Card.Header>
-          <Card.Body>
-            <Text>
-              View all your questions.
+            
+            <Text color={colors.text.secondary} mb={4}>
+              Просмотрите все свои вопросы и управляйте своей базой знаний.
             </Text>
-          </Card.Body>
-          <Card.Footer>
-            <Link to="/question-bank">
-                <Button 
-                colorScheme="green" 
-                width="full"
-                onClick={() => console.log('Navigate to game history')}
+            
+            <Box mt={2}>
+              <Link to="/question-bank" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="primary"
+                  w="full"
+                  onClick={() => console.log('Navigate to question bank')}
                 >
-                View questions
+                  Просмотреть вопросы
                 </Button>
-            </Link>
-          </Card.Footer>
-        </Card.Root>
+              </Link>
+            </Box>
+          </Box>
+        </Card>
       </Grid>
     </Box>
   );

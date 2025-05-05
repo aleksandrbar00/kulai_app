@@ -24,11 +24,11 @@ interface LessonFormProps {
 
 // Preset duration options (in seconds)
 const timeOptions = [
-  { value: 30, label: '30 seconds' },
-  { value: 60, label: '1 minute' },
-  { value: 120, label: '2 minutes' },
-  { value: 300, label: '5 minutes' },
-  { value: 600, label: '10 minutes' },
+  { value: 30, label: '30 секунд' },
+  { value: 60, label: '1 минута' },
+  { value: 120, label: '2 минуты' },
+  { value: 300, label: '5 минут' },
+  { value: 600, label: '10 минут' },
 ];
 
 export const LessonForm: React.FC<LessonFormProps> = ({ lesson, setLesson }) => {
@@ -47,16 +47,16 @@ export const LessonForm: React.FC<LessonFormProps> = ({ lesson, setLesson }) => 
   };
   
   return (
-    <Card title="Create New Lesson" mb={6}>
+    <Card title="Создать новый урок" mb={6}>
       <Box p={5}>
         <Box mb={4}>
-          <Text mb={2} color={colors.text.primary} fontWeight="medium">Lesson Title</Text>
+          <Text mb={2} color={colors.text.primary} fontWeight="medium">Название урока</Text>
           <Input
             value={lesson.title}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
               setLesson(prev => ({ ...prev, title: e.target.value }))
             }
-            placeholder="Enter lesson title"
+            placeholder="Введите название урока"
             bg={colors.background.card}
             borderColor={colors.border.normal}
             _hover={{ borderColor: colors.brand.primary }}
@@ -68,7 +68,7 @@ export const LessonForm: React.FC<LessonFormProps> = ({ lesson, setLesson }) => 
         </Box>
 
         <Box mb={4}>
-          <Text mb={2} color={colors.text.primary} fontWeight="medium">Duration</Text>
+          <Text mb={2} color={colors.text.primary} fontWeight="medium">Продолжительность</Text>
           <Box mb={3}>
             {/* Preset time options */}
             <Box display="flex" flexWrap="wrap" gap={2}>

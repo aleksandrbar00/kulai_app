@@ -158,7 +158,7 @@ const LessonManager: React.FC = () => {
   return (
     <Box p={6} maxW="800px" margin="0 auto">
       <Heading as="h1" size="xl" mb={6}>
-        Lesson Manager
+        Управление уроками
       </Heading>
 
       <Stack gap={4}>
@@ -168,7 +168,7 @@ const LessonManager: React.FC = () => {
         />
 
         <Box>
-          <Text mb={2}>Select Questions</Text>
+          <Text mb={2}>Выберите вопросы</Text>
           <CategoryList 
             categories={categories}
             selectedQuestions={selectedQuestions}
@@ -178,13 +178,13 @@ const LessonManager: React.FC = () => {
 
         <Box mt={4}>
           <HStack justifyContent="space-between">
-            <Text>Selected Questions: {selectedQuestions.size}</Text>
+            <Text>Выбранные вопросы: {selectedQuestions.size}</Text>
             <Button 
               colorScheme="blue" 
               onClick={handleStartLesson}
               disabled={selectedQuestions.size === 0 || !lesson.title}
             >
-              Start Lesson
+              Начать урок
             </Button>
           </HStack>
         </Box>

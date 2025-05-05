@@ -1,7 +1,7 @@
 import { Flex, Image } from "@chakra-ui/react"
-import { UserAvatar } from "../UserAvatar"
 import { Link } from "react-router"
 import LogoIcon from "../../../logo.svg"
+import { UserMenu } from "../../auth/UserMenu"
 
 export const Navbar = () => {
     return <Flex 
@@ -20,6 +20,6 @@ export const Navbar = () => {
                 />
             </Flex>
         </Link>
-        <UserAvatar name="Test User" />
+        <UserMenu />
     </Flex>
 }

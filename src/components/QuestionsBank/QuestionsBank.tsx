@@ -6,14 +6,15 @@ import {
   Text,
   VStack,
   HStack,
-  Button,
   Badge,
-  Card,
-  Collapsible,
+  Input,
+  Icon,
 } from '@chakra-ui/react';
-import { useColorModeValue } from '../ui/color-mode';
+import { FaSearch, FaBook, FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { useSearchParams } from 'react-router';
-import { FaSearch } from 'react-icons/fa';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { colors } from '../ui/styles';
 
 // Type definitions
 type Question = {
@@ -43,28 +44,28 @@ export const QuestionBank = () => {
       subcategories: [
         {
           id: 101,
-          name: 'Variables',
+          name: 'Переменные',
           questions: [
             {
               id: 1001,
-              question: 'What is the difference between let, const, and var?',
-              answer: 'var has function scope, let and const have block scope. const cannot be reassigned after declaration.'
+              question: 'В чем разница между let, const и var?',
+              answer: 'var имеет функциональную область видимости, let и const имеют блочную область видимости. const нельзя переназначить после объявления.'
             },
             {
               id: 1002,
-              question: 'What is hoisting in JavaScript?',
-              answer: 'Hoisting is JavaScript\'s behavior of moving declarations to the top of their scope before code execution.'
+              question: 'Что такое поднятие (hoisting) в JavaScript?',
+              answer: 'Поднятие (Hoisting) - это поведение JavaScript, при котором объявления перемещаются в верхнюю часть их области видимости перед выполнением кода.'
             }
           ]
         },
         {
           id: 102,
-          name: 'Functions',
+          name: 'Функции',
           questions: [
             {
               id: 1003,
-              question: 'What is an arrow function?',
-              answer: 'Arrow functions are a concise syntax for writing function expressions with lexical this binding.'
+              question: 'Что такое стрелочная функция?',
+              answer: 'Стрелочные функции - это краткий синтаксис для написания функциональных выражений с лексическим связыванием this.'
             }
           ]
         }
@@ -76,12 +77,12 @@ export const QuestionBank = () => {
       subcategories: [
         {
           id: 201,
-          name: 'Components',
+          name: 'Компоненты',
           questions: [
             {
               id: 2001,
-              question: 'What is the difference between functional and class components?',
-              answer: 'Functional components are simpler and use hooks, while class components have lifecycle methods.'
+              question: 'В чем разница между функциональными и классовыми компонентами?',
+              answer: 'Функциональные компоненты проще и используют хуки, в то время как классовые компоненты имеют методы жизненного цикла.'
             }
           ]
         }
@@ -159,165 +160,215 @@ export const QuestionBank = () => {
     setSelectedQuestion(question);
   };
 
-  const sidebarBg = useColorModeValue('gray.50', 'gray.700');
-  const contentBg = useColorModeValue('white', 'gray.800');
-
   return (
-    <Flex height="100vh" overflow="hidden" direction="column">
+    <Box p={6}>
+      <Heading 
+        size="xl" 
+        mb={6} 
+        textAlign="center"
+        color={colors.text.primary}
+      >
+        Банк вопросов
+      </Heading>
+
       {/* Search bar */}
-      <Box p={4} borderBottomWidth="1px" borderColor="gray.200">
+      <Box maxW="800px" mx="auto" mb={6}>
         <form onSubmit={handleSearch}>
           <Flex>
-            <input
-              type="text"
-              placeholder="Search questions..."
+            <Input
+              flex={1}
+              placeholder="Поиск вопросов..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ 
-                flex: 1, 
-                padding: '8px 12px', 
-                borderRadius: '0.375rem 0 0 0.375rem',
-                border: '1px solid #E2E8F0',
-                outline: 'none'
+              borderRadius="md 0 0 md"
+              bg={colors.background.card}
+              borderColor={colors.border.normal}
+              color={colors.text.primary}
+              _hover={{ borderColor: colors.brand.primary }}
+              _focus={{ 
+                borderColor: colors.brand.primary,
+                boxShadow: `0 0 0 1px ${colors.brand.primary}`
               }}
             />
-            <Button 
+            <Button
               type="submit"
-              borderRadius="0 0.375rem 0.375rem 0"
-              aria-label="Search"
+              borderRadius="0 md md 0"
+              aria-label="Поиск"
+              variant="primary"
             >
-              <FaSearch />
+              <Icon as={FaSearch} />
             </Button>
           </Flex>
         </form>
       </Box>
       
-      <Flex flex={1} overflow="hidden">
+      <Flex 
+        direction={{ base: 'column', md: 'row' }} 
+        gap={6}
+        maxW="1200px"
+        mx="auto"
+      >
         {/* Sidebar */}
-        <Box
-          width="300px"
-          borderRightWidth="1px"
-          borderColor="gray.200"
-          backgroundColor={sidebarBg}
-          overflowY="auto"
-          padding={4}
-        >
-          <Heading size="md" marginBottom={4} color="teal.500">
-            Question Bank
-          </Heading>
-          
-          <VStack align="stretch">
-            {categories.map((category) => (
-              <Box key={category.id}>
-                <Collapsible.Root
-                  open={!!expandedCategories[category.id]}
-                  onOpenChange={() => toggleCategory(category.id)}
-                >
-                  <Collapsible.Trigger
-                    as={Button}
+        <Card w={{ base: 'full', md: '300px' }}>
+          <Box p={4}>
+            <Flex align="center" mb={4}>
+              <Box
+                borderRadius="full"
+                bg={`${colors.brand.primary}30`}
+                p={3}
+                mr={3}
+              >
+                <Icon as={FaBook} w={5} h={5} color={colors.brand.primary} />
+              </Box>
+              <Heading size="md" color={colors.text.primary}>
+                Категории
+              </Heading>
+            </Flex>
+            
+            <VStack align="stretch" gap={3}>
+              {categories.map((category) => (
+                <Box key={category.id}>
+                  <Button
+                    variant="ghost"
                     width="full"
                     justifyContent="space-between"
+                    onClick={() => toggleCategory(category.id)}
+                    py={2}
                   >
                     <HStack>
+                      <Icon 
+                        as={expandedCategories[category.id] ? FaChevronDown : FaChevronRight} 
+                        color={colors.text.secondary}
+                        mr={2}
+                      />
                       <Text>{category.name}</Text>
-                      <Badge colorScheme="teal" marginLeft={2}>
-                        {category.subcategories.length}
-                      </Badge>
                     </HStack>
-                  </Collapsible.Trigger>
+                    <Badge 
+                      bg={`${colors.brand.primary}30`}
+                      color={colors.brand.primary}
+                      borderRadius="full"
+                      px={2}
+                    >
+                      {category.subcategories.length}
+                    </Badge>
+                  </Button>
 
-                  <Collapsible.Content>
-                    <VStack align="stretch" paddingLeft={8} marginTop={2}>
+                  {expandedCategories[category.id] && (
+                    <VStack align="stretch" pl={6} mt={1} gap={2}>
                       {category.subcategories.map((subcategory) => (
                         <Box key={subcategory.id}>
-                          <Collapsible.Root
-                            open={!!expandedCategories[subcategory.id]}
-                            onOpenChange={() => toggleCategory(subcategory.id)}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            width="full"
+                            justifyContent="space-between"
+                            onClick={() => toggleCategory(subcategory.id)}
+                            py={1}
                           >
-                            <Collapsible.Trigger
-                              as={Button}
-                              width="full"
-                              justifyContent="space-between"
+                            <HStack>
+                              <Icon 
+                                as={expandedCategories[subcategory.id] ? FaChevronDown : FaChevronRight} 
+                                color={colors.text.secondary}
+                                mr={2}
+                                boxSize={3}
+                              />
+                              <Text fontSize="sm">{subcategory.name}</Text>
+                            </HStack>
+                            <Badge 
+                              bg={`${colors.status.info}30`}
+                              color={colors.status.info}
+                              borderRadius="full"
+                              px={2}
+                              fontSize="xs"
                             >
-                              <HStack>
-                                <Text fontSize="sm">{subcategory.name}</Text>
-                                <Badge colorScheme="blue" marginLeft={2}>
-                                  {subcategory.questions.length}
-                                </Badge>
-                              </HStack>
-                            </Collapsible.Trigger>
+                              {subcategory.questions.length}
+                            </Badge>
+                          </Button>
 
-                            <Collapsible.Content>
-                              <VStack align="stretch" paddingLeft={6} marginTop={1}>
-                                {subcategory.questions.map((question) => (
-                                  <Button
-                                    key={question.id}
-                                    variant="ghost"
-                                    size="xs"
-                                    width="full"
-                                    justifyContent="flex-start"
-                                    onClick={() => handleQuestionClick(question)}
+                          {expandedCategories[subcategory.id] && (
+                            <VStack align="stretch" pl={6} gap={1} mt={1}>
+                              {subcategory.questions.map((question) => (
+                                <Box 
+                                  key={question.id}
+                                  py={1}
+                                  px={3}
+                                  borderRadius="md"
+                                  cursor="pointer"
+                                  bg={selectedQuestion?.id === question.id ? 
+                                    `${colors.brand.primary}20` : 'transparent'}
+                                  _hover={{ bg: `${colors.background.light}50` }}
+                                  onClick={() => handleQuestionClick(question)}
+                                >
+                                  <Text 
+                                    fontSize="sm"
+                                    maxW="100%"
+                                    overflow="hidden"
+                                    textOverflow="ellipsis"
+                                    whiteSpace="nowrap"
+                                    color={selectedQuestion?.id === question.id ? 
+                                      colors.brand.primary : colors.text.secondary}
                                   >
-                                    <Text
-                                      fontSize="xs"
-                                      maxWidth="180px"
-                                      textAlign="left"
-                                    >
-                                      {question.question}
-                                    </Text>
-                                  </Button>
-                                ))}
-                              </VStack>
-                            </Collapsible.Content>
-                          </Collapsible.Root>
+                                    {question.question}
+                                  </Text>
+                                </Box>
+                              ))}
+                            </VStack>
+                          )}
                         </Box>
                       ))}
                     </VStack>
-                  </Collapsible.Content>
-                </Collapsible.Root>
-              </Box>
-            ))}
-          </VStack>
-        </Box>
-
-        {/* Main Content */}
-        <Box flex={1} overflowY="auto" backgroundColor={contentBg} padding={6}>
-          {selectedQuestion ? (
-            <Card.Root>
-              <Card.Header>
-                <Heading size="md">Question Details</Heading>
-              </Card.Header>
-              <Card.Body>
-                <Text fontWeight="bold" marginBottom={4}>
-                  {selectedQuestion.question}
-                </Text>
-                <Box
-                  padding={4}
-                  borderRadius="md"
-                  borderLeftWidth="4px"
-                  borderColor="teal.500"
-                >
-                  <HStack marginBottom={2}>
-                    <Text fontWeight="semibold">Correct Answer:</Text>
-                  </HStack>
-                  <Text>{selectedQuestion.answer}</Text>
+                  )}
                 </Box>
-              </Card.Body>
-            </Card.Root>
-          ) : (
-            <Flex
-              direction="column"
-              align="center"
-              justify="center"
-              height="60vh"
-            >
-              <Text fontSize="lg" color="gray.500">
-                Select a question from the sidebar to view details
-              </Text>
-            </Flex>
-          )}
-        </Box>
+              ))}
+            </VStack>
+          </Box>
+        </Card>
+
+        {/* Question display */}
+        <Card flex={1}>
+          <Box p={5}>
+            {selectedQuestion ? (
+              <Box>
+                <Heading 
+                  size="md" 
+                  mb={4}
+                  color={colors.text.primary}
+                >
+                  {selectedQuestion.question}
+                </Heading>
+                
+                <Box 
+                  p={4} 
+                  bg={colors.background.main}
+                  borderRadius="md"
+                  borderLeft="4px solid"
+                  borderColor={colors.brand.primary}
+                >
+                  <Text color={colors.text.secondary}>
+                    {selectedQuestion.answer}
+                  </Text>
+                </Box>
+              </Box>
+            ) : (
+              <Flex 
+                direction="column" 
+                align="center" 
+                justify="center" 
+                h="100%" 
+                minH="200px"
+              >
+                <Text
+                  color={colors.text.muted}
+                  textAlign="center"
+                  p={6}
+                >
+                  Выберите вопрос из списка слева или используйте поиск, чтобы найти конкретный вопрос
+                </Text>
+              </Flex>
+            )}
+          </Box>
+        </Card>
       </Flex>
-    </Flex>
+    </Box>
   );
 };

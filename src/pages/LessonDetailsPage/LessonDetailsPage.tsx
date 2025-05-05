@@ -32,7 +32,7 @@ export const LessonDetailsPage = () => {
   if (isLoading) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Box p={4}>Loading lesson details...</Box>
+        <Box p={4}>Загрузка информации об уроке...</Box>
       </Container>
     );
   }
@@ -41,8 +41,8 @@ export const LessonDetailsPage = () => {
   if (error || !lesson) {
     return (
       <ErrorMessage
-        title="Lesson Not Found"
-        message={error || "The requested lesson could not be found in your history"}
+        title="Урок не найден"
+        message={error || "Запрошенный урок не найден в вашей истории"}
       />
     );
   }
@@ -51,8 +51,8 @@ export const LessonDetailsPage = () => {
   if (questions.length === 0) {
     return (
       <ErrorMessage
-        title="No Questions Found"
-        message="This lesson doesn't contain any questions"
+        title="Вопросы не найдены"
+        message="Этот урок не содержит вопросов"
         colorScheme="yellow"
       />
     );
@@ -66,7 +66,7 @@ export const LessonDetailsPage = () => {
         onClick={() => navigate('/history')}
         variant="ghost"
       >
-        <Box as={FaArrowLeft} mr={2} /> Back to History
+        <Box as={FaArrowLeft} mr={2} /> Назад к истории
       </Button>
 
       {/* Lesson header with metadata */}
@@ -97,7 +97,7 @@ export const LessonDetailsPage = () => {
             size="lg"
             onClick={() => navigate(`/lesson-process/${lesson.id}`)}
           >
-            Continue Lesson
+            Продолжить урок
           </Button>
         </Box>
       )}
