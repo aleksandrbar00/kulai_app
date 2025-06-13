@@ -3,8 +3,10 @@ import { Box, Text, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 import { authState, logout, getCurrentUser } from "./authStore";
 import { colors } from "../ui/styles";
+import { useSignals } from "@preact/signals-react/runtime";
 
 export const UserMenu: React.FC = () => {
+  useSignals();
   const navigate = useNavigate();
   const isAuthenticated = authState.value.isAuthenticated;
   const user = getCurrentUser();

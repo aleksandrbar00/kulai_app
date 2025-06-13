@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useMemo } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   Collapsible,
 } from "@chakra-ui/react";
 import type { Category } from "../../../../../types/api";
+import { SearchInput } from "./components/SearchInput";
 
 type TProps = {
   categories: Category[];
@@ -21,6 +22,26 @@ export const CategoryList: React.FC<TProps> = memo(
     const [expandedCategories, setExpandedCategories] = useState<
       Record<number, boolean>
     >({});
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const filteredCategories = useMemo(() => {
+      if (!searchTerm) return categories;
+
+      const normalizedSearch = searchTerm.toLowerCase();
+      return categories
+        .map((category) => ({
+          ...category,
+          subcategories: category.subcategories
+            .map((subcategory) => ({
+              ...subcategory,
+              questions: subcategory.questions.filter((q) =>
+                q.title.toLowerCase().includes(normalizedSearch),
+              ),
+            }))
+            .filter((subcategory) => subcategory.questions.length > 0),
+        }))
+        .filter((category) => category.subcategories.length > 0);
+    }, [categories, searchTerm]);
 
     const toggleCategory = (categoryId: number) => {
       setExpandedCategories((prev) => ({
@@ -74,7 +95,9 @@ export const CategoryList: React.FC<TProps> = memo(
 
     return (
       <VStack align="stretch" gap={2}>
-        {categories.map((category) => (
+        <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+        {filteredCategories.map((category) => (
           <Box key={category.id} borderWidth="1px" borderRadius="md" p={2}>
             <Collapsible.Root
               open={!!expandedCategories[category.id]}

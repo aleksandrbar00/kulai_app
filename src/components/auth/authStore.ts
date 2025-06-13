@@ -24,27 +24,37 @@ const initialState: TAuthState = {
   error: null,
 };
 
-const loadInitialState = (): TAuthState => {
+export const loadInitialState = async () => {
   try {
     const token = localStorage.getItem("token");
-    const savedUser = localStorage.getItem("kulai_auth_user");
-    if (token && savedUser) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const user = JSON.parse(savedUser);
-      return {
-        user,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      };
+    if (!token) {
+      return initialState;
     }
-  } catch (error) {
-    console.error("Failed to load user from localStorage:", error);
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const userData = await userService.getCurrentUser();
+
+    authState.value = {
+      user: userData,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    };
+    isAuthReady.value = true;
+  } catch {
+    return initialState;
   }
-  return initialState;
 };
 
-export const authState = signal<TAuthState>(loadInitialState());
+export const isAuthReady = signal(false);
+
+export const authState = signal<TAuthState>({
+  user: null,
+  isAuthenticated: false,
+  isLoading: true,
+  error: null,
+});
 
 const updateAuthState = (newState: Partial<TAuthState>) => {
   authState.value = { ...authState.value, ...newState };

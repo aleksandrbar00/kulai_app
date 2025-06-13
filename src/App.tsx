@@ -11,8 +11,14 @@ import { LessonContinueModal } from "./components/lesson/LessonContinueModal";
 import { LoginPage, RegisterPage } from "./pages/AuthPages";
 import { ProfilePage } from "./pages/ProfilePage";
 import { AuthGuard } from "./components/auth/AuthGuard";
+import { useEffect } from "react";
+import { loadInitialState } from "./components/auth/authStore";
 
 export const App = () => {
+  useEffect(() => {
+    loadInitialState();
+  }, []);
+
   return (
     <Provider>
       <BrowserRouter>
