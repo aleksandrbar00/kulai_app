@@ -82,6 +82,7 @@ export const login = async (username: string, password: string) => {
       isLoading: false,
     });
 
+    isAuthReady.value = true;
     return { success: true };
   } catch (error) {
     const errorMessage =
