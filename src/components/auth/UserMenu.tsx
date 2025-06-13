@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Box, Text, Button } from '@chakra-ui/react';
-import { useNavigate } from 'react-router';
-import { authState, logout, getCurrentUser } from './authStore';
-import { colors } from '../ui/styles';
+import React, { useState } from "react";
+import { Box, Text, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router";
+import { authState, logout, getCurrentUser } from "./authStore";
+import { colors } from "../ui/styles";
 
 export const UserMenu: React.FC = () => {
   const navigate = useNavigate();
@@ -12,20 +12,20 @@ export const UserMenu: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
     setMenuOpen(false);
   };
 
   const handleLogin = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleRegister = () => {
-    navigate('/register');
+    navigate("/register");
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate("/profile");
     setMenuOpen(false);
   };
 
@@ -57,24 +57,24 @@ export const UserMenu: React.FC = () => {
   // Generate initials for avatar
   const getInitials = () => {
     if (!user?.name) return user?.email.charAt(0).toUpperCase();
-    
+
     return user.name
-      .split(' ')
-      .map(part => part.charAt(0).toUpperCase())
+      .split(" ")
+      .map((part) => part.charAt(0).toUpperCase())
       .slice(0, 2)
-      .join('');
+      .join("");
   };
 
   return (
     <Box position="relative">
-      <Box 
-        display="flex" 
-        alignItems="center" 
-        gap={2} 
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={2}
         cursor="pointer"
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        <Box 
+        <Box
           bg={colors.brand.primary}
           color={colors.text.primary}
           borderRadius="full"
@@ -88,13 +88,16 @@ export const UserMenu: React.FC = () => {
         >
           {getInitials()}
         </Box>
-        <Text color={colors.text.primary} display={{ base: 'none', md: 'block' }}>
+        <Text
+          color={colors.text.primary}
+          display={{ base: "none", md: "block" }}
+        >
           {user?.name || user?.email}
         </Text>
       </Box>
-      
+
       {menuOpen && (
-        <Box 
+        <Box
           position="absolute"
           top="100%"
           right="0"
@@ -110,7 +113,12 @@ export const UserMenu: React.FC = () => {
           width="200px"
           overflow="hidden"
         >
-          <Box px={3} py={2} borderBottom="1px solid" borderColor={colors.border.normal}>
+          <Box
+            px={3}
+            py={2}
+            borderBottom="1px solid"
+            borderColor={colors.border.normal}
+          >
             <Text fontSize="xs" color={colors.text.muted}>
               Вход выполнен как
             </Text>
@@ -118,7 +126,7 @@ export const UserMenu: React.FC = () => {
               {user?.email}
             </Text>
           </Box>
-          
+
           <Box
             p={2}
             _hover={{ bg: colors.background.light }}
@@ -127,7 +135,7 @@ export const UserMenu: React.FC = () => {
           >
             <Text color={colors.text.primary}>Профиль</Text>
           </Box>
-          
+
           <Box
             p={2}
             _hover={{ bg: colors.background.light }}
@@ -142,4 +150,4 @@ export const UserMenu: React.FC = () => {
       )}
     </Box>
   );
-}; 
+};

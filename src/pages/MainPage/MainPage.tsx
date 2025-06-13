@@ -1,7 +1,9 @@
-import { CategoryCardsNavigation } from "@/components/CategoryCardsNavigation"
+import { CategoryCardsNavigation } from "@/components/layout/CategoryCardsNavigation";
 
 export const MainPage = () => {
-    return <>
-        <CategoryCardsNavigation />
+  return (
+    <>
+      <CategoryCardsNavigation />
     </>
-}
+  );
+};

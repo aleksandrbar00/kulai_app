@@ -1,5 +1,5 @@
-import { QuestionBank } from "@/components/QuestionsBank"
+import { QuestionsBank } from "@/components/lesson/QuestionsBank";
 
 export const QuestionsBankPage = () => {
-    return <QuestionBank />
-}
+  return <QuestionsBank />;
+};

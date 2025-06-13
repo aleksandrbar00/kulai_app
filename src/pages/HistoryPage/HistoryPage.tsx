@@ -1,5 +1,5 @@
-import { HistoryList } from "@/components/HistoryList"
+import { HistoryList } from "@/components/lesson/HistoryList";
 
 export const HistoryPage = () => {
-    return <HistoryList />
-}
+  return <HistoryList />;
+};

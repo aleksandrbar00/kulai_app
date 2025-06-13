@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Box, VStack, Heading, Input, Button, Text, Link } from '@chakra-ui/react';
-import { useNavigate, useLocation, Link as RouterLink } from 'react-router';
-import { login, authState } from '../../components/auth/authStore';
-import { Card } from '../../components/ui/Card';
-import { colors } from '../../components/ui/styles';
+import React, { useState } from "react";
+import { Box, VStack, Heading, Input, Button, Text } from "@chakra-ui/react";
+import { useNavigate, useLocation, Link as RouterLink } from "react-router";
+import { login } from "../../components/auth/authStore";
+import { Card } from "../../components/ui/Card";
+import { colors } from "../../components/ui/styles";
 
 export const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState<string | null>(null);
 
   // Get redirect path from location state or default to home
-  const from = location.state?.from?.pathname || '/';
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (authState.value.isAuthenticated) {
-      navigate(from, { replace: true });
-    }
-  }, [authState.value.isAuthenticated, from, navigate]);
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,119 +23,92 @@ export const LoginPage: React.FC = () => {
 
     try {
       // Validate form
-      if (!email.trim()) {
-        throw new Error('Требуется указать электронную почту');
+      if (!username.trim()) {
+        throw new Error("Username is required");
       }
 
       if (!password) {
-        throw new Error('Требуется указать пароль');
+        throw new Error("Password is required");
       }
 
       // Submit login
-      const result = await login(email, password);
+      const result = await login(username, password);
 
       if (!result.success) {
-        throw new Error(
-          result.error instanceof Error ? result.error.message : 'Не удалось войти'
-        );
+        throw new Error(result.error);
       }
 
       // Redirect to the page they tried to visit
       navigate(from, { replace: true });
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Неизвестная ошибка');
+      setError(error instanceof Error ? error.message : "Unknown error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Box 
-      minH="100vh" 
-      display="flex" 
-      alignItems="center" 
+    <Box
+      minH="100vh"
+      display="flex"
+      alignItems="center"
       justifyContent="center"
-      py={10}
+      bg={colors.background.main}
     >
-      <Card maxW="md" w="full" mx={4}>
-        <Box p={8}>
-          <VStack gap="6" alignItems="stretch">
-            <Heading textAlign="center" size="xl" color={colors.text.primary}>
-              Вход
-            </Heading>
+      <Card maxW="400px" w="100%" p={8}>
+        <VStack gap={6}>
+          <Heading size="lg" color={colors.text.primary}>
+            Вход в аккаунт
+          </Heading>
 
-            <form onSubmit={handleSubmit}>
-              <VStack gap="4" alignItems="stretch">
-                <Box>
-                  <Text mb={2} color={colors.text.primary}>Электронная почта</Text>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    bg={colors.background.card}
-                    borderColor={colors.border.normal}
-                    _hover={{ borderColor: colors.brand.primary }}
-                    _focus={{ 
-                      borderColor: colors.brand.primary,
-                      boxShadow: `0 0 0 1px ${colors.brand.primary}`
-                    }}
-                  />
-                </Box>
-
-                <Box>
-                  <Text mb={2} color={colors.text.primary}>Пароль</Text>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Ваш пароль"
-                    required
-                    bg={colors.background.card}
-                    borderColor={colors.border.normal}
-                    _hover={{ borderColor: colors.brand.primary }}
-                    _focus={{ 
-                      borderColor: colors.brand.primary,
-                      boxShadow: `0 0 0 1px ${colors.brand.primary}`
-                    }}
-                  />
-                </Box>
-
-                <Button
-                  type="submit"
-                  bg={colors.brand.primary}
-                  color={colors.text.primary}
-                  _hover={{ bg: colors.brand.hover }}
-                  disabled={isSubmitting}
-                  mt={4}
-                  w="full"
-                >
-                  {isSubmitting ? 'Выполняется вход...' : 'Войти'}
-                </Button>
-              </VStack>
-            </form>
-
-            {error && (
-              <Text color={colors.status.error} textAlign="center">
-                {error}
-              </Text>
-            )}
-
-            <Text color={colors.text.secondary} textAlign="center">
-              Еще нет аккаунта?{' '}
-              <Link 
-                as={RouterLink} 
-                href="/register" 
-                color={colors.brand.primary}
-                _hover={{ textDecoration: 'underline' }}
-              >
-                Зарегистрироваться
-              </Link>
+          {error && (
+            <Text color="red.500" textAlign="center">
+              {error}
             </Text>
-          </VStack>
-        </Box>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <VStack gap={4}>
+              <Input
+                type="text"
+                placeholder="Email"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={isSubmitting}
+                bg={colors.background.light}
+                color={colors.text.primary}
+                _placeholder={{ color: colors.text.secondary }}
+              />
+
+              <Input
+                type="password"
+                placeholder="Пароль"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isSubmitting}
+                bg={colors.background.light}
+                color={colors.text.primary}
+                _placeholder={{ color: colors.text.secondary }}
+              />
+
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                w="100%"
+                bg={colors.brand.primary}
+                color={colors.text.primary}
+                _hover={{ bg: colors.brand.hover }}
+              >
+                Вход
+              </Button>
+            </VStack>
+          </form>
+
+          <Text color={colors.text.secondary}>
+            Нет аккаунта? <RouterLink to="/register">Регистрация</RouterLink>
+          </Text>
+        </VStack>
       </Card>
     </Box>
   );
-}; 
+};

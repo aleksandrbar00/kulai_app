@@ -1,5 +1,5 @@
-import LessonManager from "@/components/LessonManager"
+import LessonManager from "@/components/lesson/LessonManager/LessonManager";
 
 export const LessonManagerPage = () => {
-    return <LessonManager />
-}
+  return <LessonManager />;
+};

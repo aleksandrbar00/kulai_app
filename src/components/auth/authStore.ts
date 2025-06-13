@@ -1,184 +1,141 @@
 import { signal } from "@preact/signals-react";
+import { authService, userService } from "../../services/api";
+import type { CreateUserDto } from "../../types/api";
+import { api } from "../../services/api";
 
-// Define user interface
-export interface User {
-  id: string;
+export type TUser = {
+  id: number;
   email: string;
-  name?: string;
-  age?: number;
-}
+  name: string;
+  age: number;
+};
 
-interface StoredUser extends User {
-  password: string;
-}
-
-// Define authentication state interface
-interface AuthState {
-  user: User | null;
+type TAuthState = {
+  user: TUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-}
+};
 
-// Initial auth state
-const initialState: AuthState = {
+const initialState: TAuthState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
-  error: null
+  error: null,
 };
 
-// Load user from localStorage on initialization
-const loadInitialState = (): AuthState => {
+const loadInitialState = (): TAuthState => {
   try {
-    const savedUser = localStorage.getItem('kulai_auth_user');
-    if (savedUser) {
+    const token = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("kulai_auth_user");
+    if (token && savedUser) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const user = JSON.parse(savedUser);
       return {
         user,
         isAuthenticated: true,
         isLoading: false,
-        error: null
+        error: null,
       };
     }
   } catch (error) {
-    console.error('Не удалось загрузить пользователя из localStorage:', error);
+    console.error("Failed to load user from localStorage:", error);
   }
   return initialState;
 };
 
-// Create auth state signal
-export const authState = signal<AuthState>(loadInitialState());
+export const authState = signal<TAuthState>(loadInitialState());
 
-// Helper to update auth state
-const updateAuthState = (newState: Partial<AuthState>) => {
+const updateAuthState = (newState: Partial<TAuthState>) => {
   authState.value = { ...authState.value, ...newState };
 };
 
-// Authenticate user (login)
-export const login = async (email: string, password: string) => {
+export const login = async (username: string, password: string) => {
   try {
     updateAuthState({ isLoading: true, error: null });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // For now, check localStorage for user credentials
-    const usersStr = localStorage.getItem('kulai_users');
-    const users: StoredUser[] = usersStr ? JSON.parse(usersStr) : [];
-    
-    const user = users.find((u) => u.email === email);
-    
-    if (!user) {
-      throw new Error('Пользователь не найден');
-    }
-    
-    if (user.password !== password) {
-      throw new Error('Неверный пароль');
-    }
-
-    // Create user object without password
-    const userWithoutPassword: User = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      age: user.age
-    };
-    
-    // Store user in localStorage
-    localStorage.setItem('kulai_auth_user', JSON.stringify(userWithoutPassword));
-    
-    updateAuthState({
-      user: userWithoutPassword,
-      isAuthenticated: true,
-      isLoading: false
+    const { access_token: token } = await authService.login({
+      username,
+      password,
     });
-    
+
+    localStorage.setItem("token", token);
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const userData = await userService.getCurrentUser();
+
+    localStorage.setItem("kulai_auth_user", JSON.stringify(userData));
+
+    updateAuthState({
+      user: userData,
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
     return { success: true };
   } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to login";
     updateAuthState({
       isLoading: false,
-      error: error instanceof Error ? error.message : 'Не удалось войти'
+      error: errorMessage,
     });
-    return { success: false, error };
+    return { success: false, error: errorMessage };
   }
 };
 
-// Register new user
-export const register = async (userData: {
-  email: string;
-  password: string;
-  name?: string;
-  age?: number;
-}) => {
+export const register = async (userData: CreateUserDto) => {
   try {
     updateAuthState({ isLoading: true, error: null });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    const response = await userService.create(userData);
 
-    // For now, check if user already exists
-    const usersStr = localStorage.getItem('kulai_users');
-    const users: StoredUser[] = usersStr ? JSON.parse(usersStr) : [];
-    
-    if (users.some((u) => u.email === userData.email)) {
-      throw new Error('Этот email уже зарегистрирован');
-    }
-
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      ...userData
+    const userWithoutPassword: TUser = {
+      id: response.id,
+      email: response.email,
+      name: response.name,
+      age: response.age,
     };
 
-    // Add to users array
-    users.push(newUser as StoredUser);
-    localStorage.setItem('kulai_users', JSON.stringify(users));
+    localStorage.setItem(
+      "kulai_auth_user",
+      JSON.stringify(userWithoutPassword),
+    );
 
-    // Create user object without password
-    const userWithoutPassword: User = {
-      id: newUser.id,
-      email: newUser.email,
-      name: newUser.name,
-      age: newUser.age
-    };
-    
-    // Set as logged in user
-    localStorage.setItem('kulai_auth_user', JSON.stringify(userWithoutPassword));
-    
     updateAuthState({
       user: userWithoutPassword,
       isAuthenticated: true,
-      isLoading: false
+      isLoading: false,
     });
-    
+
     return { success: true };
   } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to register";
     updateAuthState({
       isLoading: false,
-      error: error instanceof Error ? error.message : 'Не удалось зарегистрироваться'
+      error: errorMessage,
     });
-    return { success: false, error };
+    return { success: false, error: errorMessage };
   }
 };
 
-// Logout user
 export const logout = () => {
-  localStorage.removeItem('kulai_auth_user');
+  localStorage.removeItem("token");
+  localStorage.removeItem("kulai_auth_user");
+  delete api.defaults.headers.common["Authorization"];
   updateAuthState({
     user: null,
     isAuthenticated: false,
-    error: null
+    error: null,
   });
   return { success: true };
 };
 
-// Check if user is authenticated
 export const checkAuth = () => {
   return authState.value.isAuthenticated;
 };
 
-// Get current user
 export const getCurrentUser = () => {
   return authState.value.user;
-}; 
+};

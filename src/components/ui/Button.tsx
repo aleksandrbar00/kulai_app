@@ -1,22 +1,22 @@
-import React from 'react';
-import { Button as ChakraButton } from '@chakra-ui/react';
-import type { ButtonProps as ChakraButtonProps } from '@chakra-ui/react';
-import { buttonStyles } from './styles';
+import React from "react";
+import { Button as ChakraButton } from "@chakra-ui/react";
+import type { ButtonProps as ChakraButtonProps } from "@chakra-ui/react";
+import { buttonStyles } from "./styles";
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
-interface ButtonProps extends Omit<ChakraButtonProps, 'variant'> {
+interface ButtonProps extends Omit<ChakraButtonProps, "variant"> {
   variant?: ButtonVariant;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  variant = 'primary',
+export const Button: React.FC<ButtonProps> = ({
+  variant = "primary",
   children,
-  ...props 
+  ...props
 }) => {
   // Apply the variant-specific styles directly as props
   const variantStyle = buttonStyles[variant];
-  
+
   return (
     <ChakraButton
       fontWeight={buttonStyles.base.fontWeight}
@@ -33,4 +33,4 @@ export const Button: React.FC<ButtonProps> = ({
       {children}
     </ChakraButton>
   );
-}; 
+};
