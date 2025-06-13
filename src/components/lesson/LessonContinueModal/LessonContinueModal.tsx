@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router";
 import { Box, Button, Text, Flex, Heading } from "@chakra-ui/react";
 import { Card } from "../../ui/Card";
 import { lessonService } from "../../../services/api";
-import { lessonActions } from "../GameManager/stores";
+import { lessonActions } from "../LessonProcess/stores";
 
 export const LessonContinueModal = () => {
   const [isOpen, setIsOpen] = useState(false);

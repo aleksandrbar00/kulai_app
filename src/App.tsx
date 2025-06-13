@@ -3,7 +3,7 @@ import { ContentLayout } from "./components/layout/ContentLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { MainPage } from "./pages/MainPage";
 import { QuestionsBankPage } from "./pages/QuestionsBankPage";
-import { LessonManagerPage } from "./pages/LessonPage";
+import { LessonManagerPage } from "./pages/LessonManagerPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { LessonProccessPage } from "./pages/LessonProccessPage";
 import { LessonDetailsPage } from "./pages/LessonDetailsPage";

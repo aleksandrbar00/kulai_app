@@ -169,7 +169,7 @@ export const HistoryList = () => {
                       item.score >= item.totalQuestions / 2 ? "green" : "red"
                     }
                   >
-                    {item.score}/{item.totalQuestions} correct
+                    {item.score}/{item.totalQuestions}
                   </Badge>
                 )}
 

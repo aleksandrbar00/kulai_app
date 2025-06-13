@@ -6,7 +6,7 @@ import { questionService } from "../../../services/api";
 import type { Category } from "../../../types/api";
 import { LessonForm } from "./components/LessonForm";
 import { CategoryList } from "./components/CategoryList";
-import { lessonActions } from "../GameManager/stores";
+import { lessonActions } from "../LessonProcess/stores";
 import type { TLessonFormData } from "./types";
 
 const LessonManager: React.FC = () => {

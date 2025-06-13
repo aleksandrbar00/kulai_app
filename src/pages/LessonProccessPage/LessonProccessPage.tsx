@@ -1,5 +1,5 @@
-import { GameManager } from "@/components/lesson/GameManager";
+import { LessonProcess } from "@/components/lesson/LessonProcess";
 
 export const LessonProccessPage = () => {
-  return <GameManager />;
+  return <LessonProcess />;
 };

@@ -8,7 +8,7 @@ import { CurrentQuestion } from "./components/CurrentQuestion";
 import type { LessonSessionResponseDto } from "@/types/api";
 import { lessonService } from "@/services/api";
 
-export const GameManager = () => {
+export const LessonProcess = () => {
   const navigate = useNavigate();
   const { lessonId } = useParams<{ lessonId: string }>();
   useSignals();
