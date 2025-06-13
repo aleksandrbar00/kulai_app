@@ -11,7 +11,7 @@ import type {
   Category,
 } from "../types/api";
 
-const API_BASE_URL = "http://localhost:3000"; // Update this with your actual API URL
+const API_BASE_URL = "http://localhost:3000";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -48,10 +48,7 @@ export const userService = {
 
 export const questionService = {
   getAll: async (): Promise<Category[]> => {
-    console.log("Making API request to /questions/all");
     const response = await api.get("/questions/all");
-    console.log("Raw API response:", response);
-    console.log("API response data:", response.data);
     return response.data;
   },
 };

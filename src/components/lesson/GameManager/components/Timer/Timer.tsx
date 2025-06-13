@@ -9,14 +9,12 @@ export const Timer = () => {
   const startTimeRef = useRef(Date.now());
   const initialTimeRef = useRef(timeRemaining.value);
 
-  // Update initial time when timeRemaining changes (e.g., on page reload)
   useEffect(() => {
     initialTimeRef.current = timeRemaining.value;
     startTimeRef.current = Date.now();
     setDisplayTime(timeRemaining.value);
   }, [timeRemaining.value]);
 
-  // Update the display time continuously if not showing results
   useEffect(() => {
     if (lessonState.value.showResults || !timeRemaining.value) {
       return;

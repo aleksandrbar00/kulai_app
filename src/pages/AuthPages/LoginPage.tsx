@@ -13,7 +13,6 @@ export const LoginPage: React.FC = () => {
   const location = useLocation();
   const [error, setError] = useState<string | null>(null);
 
-  // Get redirect path from location state or default to home
   const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,26 +21,23 @@ export const LoginPage: React.FC = () => {
     setError(null);
 
     try {
-      // Validate form
       if (!username.trim()) {
-        throw new Error("Username is required");
+        throw new Error("Введите email");
       }
 
       if (!password) {
-        throw new Error("Password is required");
+        throw new Error("Введите пароль");
       }
 
-      // Submit login
       const result = await login(username, password);
 
       if (!result.success) {
         throw new Error(result.error);
       }
 
-      // Redirect to the page they tried to visit
       navigate(from, { replace: true });
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Unknown error");
+      setError(error instanceof Error ? error.message : "Ошибка");
     } finally {
       setIsSubmitting(false);
     }
@@ -70,7 +66,7 @@ export const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <VStack gap={4}>
               <Input
-                type="text"
+                type="email"
                 placeholder="Email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}

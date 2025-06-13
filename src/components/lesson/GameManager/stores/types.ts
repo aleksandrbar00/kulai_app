@@ -1,7 +1,3 @@
-// Keys for localStorage
-export const CURRENT_LESSON_KEY = "kulai_current_lesson";
-export const LESSON_LIST_KEY = "kulai_lessons";
-
 export type TQuestion = {
   id: string;
   text: string;
@@ -12,7 +8,7 @@ export type TQuestion = {
   }>;
   answer: string;
   correctOptionId: string;
-}
+};
 
 export type TLessonState = {
   id: string;
@@ -20,11 +16,11 @@ export type TLessonState = {
   questions: TQuestion[];
   currentQuestionIndex: number;
   score: number;
-  attempts: Record<string, number>; // questionId: attempts
-  answers?: Record<string, string>; // questionId: userAnswer
+  attempts: Record<string, number>;
+  answers?: Record<string, string>;
   showResults: boolean;
-  startTime: number | null; // timestamp when lesson started
-  timeRemaining: number; // seconds remaining
+  startTime: number | null;
+  timeRemaining: number;
   createdAt: number;
 };
 

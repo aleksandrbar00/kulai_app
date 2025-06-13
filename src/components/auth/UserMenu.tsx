@@ -54,7 +54,6 @@ export const UserMenu: React.FC = () => {
     );
   }
 
-  // Generate initials for avatar
   const getInitials = () => {
     if (!user?.name) return user?.email.charAt(0).toUpperCase();
 

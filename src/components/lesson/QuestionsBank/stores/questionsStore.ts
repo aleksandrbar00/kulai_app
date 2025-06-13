@@ -1,6 +1,6 @@
 import { signal } from "@preact/signals-react";
-import { questionService } from "../../../services/api";
-import type { Category } from "../../../types/api";
+import { questionService } from "../../../../services/api";
+import type { Category } from "../../../../types/api";
 
 type TQuestionsState = {
   categories: Category[];
@@ -19,7 +19,6 @@ const allCategories = signal<Category[]>([]);
 export const questionsActions = {
   fetchQuestions: async () => {
     try {
-      console.log("Starting to fetch questions");
       questionsState.value = {
         ...questionsState.value,
         isLoading: true,
@@ -28,16 +27,13 @@ export const questionsActions = {
 
       const categories = await questionService.getAll();
       allCategories.value = categories;
-      console.log("Received categories:", categories);
 
       questionsState.value = {
         categories,
         isLoading: false,
         error: null,
       };
-      console.log("Updated store state:", questionsState.value);
     } catch (error) {
-      console.error("Error fetching questions:", error);
       questionsState.value = {
         ...questionsState.value,
         isLoading: false,
@@ -48,9 +44,6 @@ export const questionsActions = {
   },
 
   searchQuestions: (term: string) => {
-    console.log("Searching with term:", term);
-    console.log("Current categories:", questionsState.value.categories);
-
     if (!term) {
       questionsState.value = {
         ...questionsState.value,
@@ -73,7 +66,6 @@ export const questionsActions = {
       }))
       .filter((category) => category.subcategories.length > 0);
 
-    console.log("Filtered categories:", filtered);
     questionsState.value = { ...questionsState.value, categories: filtered };
   },
 };

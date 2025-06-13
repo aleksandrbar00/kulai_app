@@ -5,7 +5,7 @@ type TProps = {
   correctAnswers: number;
   incorrectAnswers: number;
   totalQuestions: number;
-  duration: number; // in seconds
+  duration: number;
 };
 
 export const PerformanceSummary = ({

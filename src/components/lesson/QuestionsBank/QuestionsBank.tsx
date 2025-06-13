@@ -12,13 +12,14 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
-import { questionsState, questionsActions } from "./questionsStore";
+import { questionsState, questionsActions } from "./stores/questionsStore";
 import { colors } from "../../ui/styles";
 import type { QuestionDto } from "../../../types/api";
 import { Card } from "../../ui/Card";
 import { useSignals } from "@preact/signals-react/runtime";
-import { SearchInput } from "./SearchInput";
+import { SearchInput } from "./components/SearchInput";
 import { useSearchParams } from "react-router";
+import { DocumentDownloads } from "./components/DocumentDownloads";
 
 export const QuestionsBank = () => {
   useSignals();
@@ -247,6 +248,11 @@ export const QuestionsBank = () => {
                 ))}
               </VStack>
             )}
+
+          <Box mt={8}>
+            {/* Document Downloads Section */}
+            <DocumentDownloads />
+          </Box>
         </Box>
       </Card>
 

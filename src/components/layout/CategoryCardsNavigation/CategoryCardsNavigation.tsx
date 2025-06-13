@@ -45,11 +45,7 @@ export const CategoryCardsNavigation = () => {
 
             <Box mt={2}>
               <Link to="/lesson" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="primary"
-                  w="full"
-                  onClick={() => console.log("Navigate to play game")}
-                >
+                <Button variant="primary" w="full">
                   Перейти к уроку
                 </Button>
               </Link>
@@ -80,11 +76,7 @@ export const CategoryCardsNavigation = () => {
 
             <Box mt={2}>
               <Link to="/history" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="primary"
-                  w="full"
-                  onClick={() => console.log("Navigate to game history")}
-                >
+                <Button variant="primary" w="full">
                   Просмотреть историю
                 </Button>
               </Link>
@@ -120,11 +112,7 @@ export const CategoryCardsNavigation = () => {
 
             <Box mt={2}>
               <Link to="/question-bank" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="primary"
-                  w="full"
-                  onClick={() => console.log("Navigate to question bank")}
-                >
+                <Button variant="primary" w="full">
                   Просмотреть вопросы
                 </Button>
               </Link>

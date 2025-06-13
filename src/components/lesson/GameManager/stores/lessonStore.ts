@@ -3,7 +3,6 @@ import type { TLessonState } from "./types";
 import type { CreateLessonDto } from "@/types/api";
 import { lessonService } from "@/services/api";
 
-// Initialize with stored state or defaults
 const initialState: TLessonState = {
   id: "",
   title: "",
@@ -41,9 +40,7 @@ export const timeRemaining = computed(() => lessonState.value.timeRemaining);
 
 export const currentLessonId = computed(() => lessonState.value.id);
 
-// API to interact with the lesson state
 export const lessonActions = {
-  // Initialize a new lesson with API
   async initializeLesson(
     title: string,
     questionIds: number[],
@@ -62,7 +59,6 @@ export const lessonActions = {
         throw new Error("Invalid question data received from API");
       }
 
-      // Transform the API question data into the format expected by components
       const transformedQuestions = response.questions.map((el) => ({
         id: el.id.toString(),
         text: el.title,
@@ -75,7 +71,6 @@ export const lessonActions = {
         correctOptionId: el.correctAnswer?.id.toString(),
       }));
 
-      // Update lesson state with API response
       lessonState.value = {
         id: response.id.toString(),
         title: `Урок ${response.id}`,
@@ -97,7 +92,6 @@ export const lessonActions = {
     }
   },
 
-  // Submit answer to API
   async submitAnswer(answerId: number): Promise<boolean> {
     try {
       const response = await lessonService.submitAnswer(
@@ -105,7 +99,6 @@ export const lessonActions = {
         { answerId },
       );
 
-      // Get the next question from API
       const nextQuestionResponse = await lessonService.getById(
         parseInt(lessonState.value.id),
       );
@@ -117,7 +110,6 @@ export const lessonActions = {
         throw new Error("Invalid question data received from API");
       }
 
-      // Update lesson state with API response
       lessonState.value = {
         ...lessonState.value,
         currentQuestionIndex: lessonState.value.currentQuestionIndex + 1,
@@ -133,15 +125,12 @@ export const lessonActions = {
     }
   },
 
-  // Move to the next question
   async moveToNextQuestion() {
     try {
-      // Get the next question from API
       const response = await lessonService.getById(
         parseInt(lessonState.value.id),
       );
 
-      // Update lesson state with new question
       lessonState.value = {
         ...lessonState.value,
         currentQuestionIndex: lessonState.value.currentQuestionIndex + 1,
@@ -154,7 +143,6 @@ export const lessonActions = {
     }
   },
 
-  // Reset the current lesson
   resetLesson() {
     lessonState.value = {
       ...lessonState.value,
@@ -167,7 +155,6 @@ export const lessonActions = {
     };
   },
 
-  // Clear the current lesson
   clearCurrentLesson() {
     lessonState.value = {
       id: "",

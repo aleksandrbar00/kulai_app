@@ -23,7 +23,6 @@ export const GameManager = () => {
             throw new Error("Invalid question data received from API");
           }
 
-          // Transform the API question data into the format expected by components
           const transformedQuestions = response.questions.map((el) => ({
             id: el.id.toString(),
             text: el.title,
@@ -36,7 +35,6 @@ export const GameManager = () => {
             correctOptionId: el.correctAnswer?.id.toString(),
           }));
 
-          // Update lesson state with API response
           lessonState.value = {
             id: response.id.toString(),
             title: `Урок ${response.id}`,

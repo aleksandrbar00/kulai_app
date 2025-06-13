@@ -1,10 +1,10 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router';
-import { authState } from './authStore';
+import React from "react";
+import { Navigate, useLocation } from "react-router";
+import { authState } from "./authStore";
 
 type TProps = {
   children: React.ReactNode;
-}
+};
 
 export const AuthGuard: React.FC<TProps> = ({ children }) => {
   const location = useLocation();
@@ -15,4 +15,4 @@ export const AuthGuard: React.FC<TProps> = ({ children }) => {
   }
 
   return <>{children}</>;
-}; 
+};

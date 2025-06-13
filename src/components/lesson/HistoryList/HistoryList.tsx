@@ -30,13 +30,11 @@ export const HistoryList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load history data from API
     const loadHistoryData = async () => {
       try {
         setIsLoading(true);
         const response = await lessonService.getHistory();
 
-        // Transform API response to our history items format
         const transformedItems: THistoryItem[] = response.lessons.map(
           (lesson) => ({
             id: lesson.id.toString(),
@@ -49,7 +47,6 @@ export const HistoryList = () => {
           }),
         );
 
-        // Sort by date (newest first)
         transformedItems.sort((a, b) => b.date.getTime() - a.date.getTime());
 
         setHistoryItems(transformedItems);

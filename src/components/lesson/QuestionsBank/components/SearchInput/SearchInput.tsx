@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Flex, Input, Button, Icon } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
-import { questionsActions } from "./questionsStore";
+import { questionsActions } from "../../stores/questionsStore";
 
 type TProps = {
   searchTerm: string;

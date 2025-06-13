@@ -18,7 +18,6 @@ export const WordGrid = ({
   useSignals();
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
-  // Reset selectedWord when the correctWord changes (new question)
   useEffect(() => {
     setSelectedWord(null);
   }, [correctWord, wordOptions]);

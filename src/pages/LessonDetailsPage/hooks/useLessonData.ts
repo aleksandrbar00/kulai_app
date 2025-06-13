@@ -68,14 +68,11 @@ export const useLessonData = (lessonId: string | undefined) => {
     loadLessonData();
   }, [lessonId, navigate]);
 
-  // Process questions for display
   const questions =
     lesson?.questions.filter((q) => q && (q.questionText || q.text)) || [];
 
-  // Use the score from the lesson data directly
   const correctAnswers = lesson?.score || 0;
 
-  // Calculate incorrect and unanswered based on API data
   const totalQuestions = lesson?.questions.length || 0;
   const incorrectAnswers = totalQuestions - correctAnswers;
 

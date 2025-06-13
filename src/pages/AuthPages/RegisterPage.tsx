@@ -21,24 +21,30 @@ export const RegisterPage: React.FC = () => {
     setError(null);
 
     try {
-      // Validate form
       if (!email.trim()) {
-        throw new Error("Email is required");
+        throw new Error("Введите email");
       }
 
       if (!password) {
-        throw new Error("Password is required");
+        throw new Error("Введите пароль");
+      }
+
+      if (!name) {
+        throw new Error("Введите имя");
+      }
+
+      if (!age) {
+        throw new Error("Введите возраст");
       }
 
       if (password !== confirmPassword) {
-        throw new Error("Passwords do not match");
+        throw new Error("Пароль не совпадает");
       }
 
       if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters long");
+        throw new Error("Пароль меньше 6 символов");
       }
 
-      // Submit registration
       const result = await register({
         email,
         password,
@@ -50,10 +56,9 @@ export const RegisterPage: React.FC = () => {
         throw new Error(result.error);
       }
 
-      // Redirect to home page
       navigate("/", { replace: true });
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Unknown error");
+      setError(error instanceof Error ? error.message : "Ошибка");
     } finally {
       setIsSubmitting(false);
     }
@@ -94,7 +99,7 @@ export const RegisterPage: React.FC = () => {
 
               <Input
                 type="text"
-                placeholder="Имя (опционально)"
+                placeholder="Имя"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isSubmitting}
@@ -105,7 +110,7 @@ export const RegisterPage: React.FC = () => {
 
               <Input
                 type="number"
-                placeholder="Возраст (опционально)"
+                placeholder="Возраст"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 disabled={isSubmitting}
